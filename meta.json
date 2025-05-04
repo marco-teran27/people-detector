@@ -1,0 +1,28 @@
+{
+  "$schema": "https://dl.viam.dev/module.schema.json",
+  "module_id": "mta:2025-sensor-detector",
+  "visibility": "private",
+  "url": "https://github.com/marco-teran27/people-detector",
+  "description": "Modular sensor component: people-detector",
+  "models": [
+    {
+      "api": "rdk:component:sensor",
+      "model": "mta:2025-sensor-detector:people-detector",
+      "short_description": "Provide a short (100 characters or less) description of this model here",
+      "markdown_link": "README.md#model-mta2025-sensor-detectorpeople-detector"
+    }
+  ],
+  "applications": null,
+  "markdown_link": "README.md",
+  "entrypoint": "reload.sh",
+  "first_run": "",
+  "build": {
+    "build": "rm -f module.tar.gz && tar czf module.tar.gz requirements.txt src/*.py src/models/*.py meta.json setup.sh reload.sh",
+    "setup": "./setup.sh",
+    "path": "module.tar.gz",
+    "arch": [
+      "linux/amd64",
+      "linux/arm64"
+    ]
+  }
+}
