@@ -15,7 +15,7 @@ People-Detector is tested on the configuation below
 }
 ```
 
-#### Attributes
+### Attributes
 
 The following attributes are available for this model:
 
@@ -25,7 +25,7 @@ The following attributes are available for this model:
 | `vision_service` | string | Required  | Name of vision service |
 | `confidence_value` | float | Optional  | Value between 0 and 1, limitor for person detection |
 
-#### Example Configuration
+### Example Configuration
 
 ```json
 {

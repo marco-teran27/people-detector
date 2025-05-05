@@ -9,7 +9,7 @@
       "api": "rdk:component:sensor",
       "model": "mta:2025-sensor-detector:people-detector",
       "short_description": "Detects a Person from a vision service based on label/Confidence level",
-      "markdown_link": "README.md#model-mta2025-sensor-detectorpeople-detector"
+      "markdown_link": "README.md#module-2025-sensor-detector"
     }
   ],
   "applications": null,
