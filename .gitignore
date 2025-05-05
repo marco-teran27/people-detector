@@ -175,3 +175,4 @@ module.tar.gz
 __pycache__/
 *.pyc
 ProcessNotes.md
+reload.sh
