@@ -54,18 +54,15 @@ class PeopleDetector(Sensor, EasyResource):
         fields = config.attributes.fields
         deps = []
 
-        if "camera_name" not in fields:
-            raise ValueError("missing required camera_name attribute")
-        if not fields["camera_name"].HasField("string_value"):
-            raise ValueError("camera_name must be a string")
-        camera_name = fields["camera_name"].string_value
-
-        if "vision_service" not in fields:
-            raise ValueError("missing required vision_service attribute") 
-        if not fields["vision_service"].HasField("string_value"):
-            raise ValueError("vision_service must be a string")
-        vision_service = fields["vision_service"].string_value
-
+        # Validate required fields first
+        required_fields = ["camera_name", "vision_service"]
+        for field in required_fields:
+            if field not in fields:
+                raise ValueError(f"missing required {field} attribute")
+            if not fields[field].HasField("string_value"):
+                raise ValueError(f"{field} must be a string")
+        
+        # Process optional fields
         if "confidence_value" in fields:
             if not fields["confidence_value"].HasField("number_value"):
                 raise ValueError("confidence_value must be a float")
@@ -73,9 +70,11 @@ class PeopleDetector(Sensor, EasyResource):
             if not 0 <= confidence_value <= 1:
                 raise ValueError("confidence_value must be between 0 and 1")
 
-        # Add dependencies as strings
-        deps.extend([vision_service, camera_name])
-
+        # Add dependencies
+        deps.extend([
+            fields["vision_service"].string_value,
+            fields["camera_name"].string_value
+        ])
         return deps
 
     def reconfigure(
@@ -108,17 +107,25 @@ class PeopleDetector(Sensor, EasyResource):
         timeout: Optional[float] = None, **kwargs
     ) -> Mapping[str, SensorReading]:
         
-        # Get image from camera
-        img = await self.camera_instance.get_image()
+        try:
+            #self.logger.debug("Getting image from camera...")
+            #img = await self.camera_instance.get_image()
+            
+            self.logger.debug("TEST Getting detections from vision service...")
+            detections = await self.vision_service_instance.get_detections_from_camera(
+                self.camera_name,
+                timeout=5.0) # 5 second timeout
+            
+            person_detected = any(
+                d.class_name.lower() == "person" and d.confidence >= self.confidence_value
+                for d in detections)
+            
+            self.logger.debug(f"Processed image with {len(detections)} detections")
+            return {"person_detected": 1 if person_detected else 0}
         
-        # Use the Vision instance to get detections from the image, matching tutorial logic
-        detections = await self.vision_service_instance.get_detections(img)
-        
-        person_detected = any(
-            d.class_name.lower() == "person" and d.confidence >= self.confidence_value
-            for d in detections)
-        
-        return {"person_detected": 1 if person_detected else 0}
+        except Exception as e:
+            self.logger.error(f"Error in get_readings: {str(e)}")
+            raise
 
     async def do_command(
         self,
@@ -135,3 +142,9 @@ class PeopleDetector(Sensor, EasyResource):
     ) -> List[Geometry]:
         self.logger.error("`get_geometries` is not implemented")
         raise NotImplementedError()
+    
+    async def cleanup(self):
+        """Release resources when component is stopped"""
+        self.camera_instance = None
+        self.vision_service_instance = None
+        await super().cleanup()

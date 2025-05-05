@@ -174,3 +174,4 @@ src/.DS_Store
 module.tar.gz
 __pycache__/
 *.pyc
+ProcessNotes.md
