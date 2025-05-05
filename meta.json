@@ -9,11 +9,11 @@
       "api": "rdk:component:sensor",
       "model": "mta:2025-sensor-detector:people-detector",
       "short_description": "Provide a short (100 characters or less) description of this model here",
-      "markdown_link": "README.md#model-mta2025-sensor-detectorpeople-detector"
+      "markdown_link": "README.md#module-2025-sensor-detector"
     }
   ],
   "applications": null,
-  "markdown_link": "README.md",
+  "markdown_link": "README.md#module-2025-sensor-detector",
   "entrypoint": "reload.sh",
   "first_run": "",
   "build": {
