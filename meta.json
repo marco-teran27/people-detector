@@ -8,21 +8,22 @@
     {
       "api": "rdk:component:sensor",
       "model": "mta:2025-sensor-detector:people-detector",
-      "short_description": "Provide a short (100 characters or less) description of this model here",
+      "short_description": "Person Detector leveraging vision service's label/confidence value",
       "markdown_link": "README.md#module-2025-sensor-detector"
     }
   ],
   "applications": null,
   "markdown_link": "README.md#module-2025-sensor-detector",
-  "entrypoint": "reload.sh",
+  "entrypoint": "dist/main",
   "first_run": "",
   "build": {
-    "build": "rm -f module.tar.gz && tar czf module.tar.gz requirements.txt src/*.py src/models/*.py meta.json setup.sh reload.sh",
+    "build": "./build.sh",
     "setup": "./setup.sh",
-    "path": "module.tar.gz",
+    "path": "dist/archive.tar.gz",
     "arch": [
       "linux/amd64",
-      "linux/arm64"
+      "linux/arm64",
+      "darwin/arm64"
     ]
   }
 }

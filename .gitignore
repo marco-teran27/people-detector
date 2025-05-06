@@ -175,3 +175,6 @@ module.tar.gz
 __pycache__/
 *.pyc
 ProcessNotes.md
+build/
+dist/
+module.tar.gz
