@@ -46,7 +46,7 @@ class PeopleDetector(Sensor, EasyResource):
     # Declare instance variables with type hints.
     camera_name: str
     vision_service: str
-    confidence_value: float = 0.8
+    confidence_value: float # = 0.8 - removed duplicate
 
     @classmethod
     def new(
@@ -190,7 +190,8 @@ class PeopleDetector(Sensor, EasyResource):
             # Pass the camera name and a 5-second timeout to ensure the operation doesn't hang.
             detections = await self.vision_service_instance.get_detections_from_camera(
                 self.camera_name,
-                timeout=5.0)
+                extra={"return_immediately": True}, # Returns faster results
+                timeout=5.0) #timeout=timeout if timeout else 5.0)
             
             # Process the detections to check for people.
             # Iterate over each detection and check if it's labeled as "person" with a confidence
